@@ -1,0 +1,9 @@
+pyrogram
+tgcrypto
+pykeyboard
+python-dotenv
+uvloop
+telegraph
+aiohttp
+lxml
+requests
