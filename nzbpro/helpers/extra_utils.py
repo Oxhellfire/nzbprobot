@@ -14,11 +14,18 @@ class DownloadStatus:
     STATUS_COMPLETED = "Completed"
     
 
-async def set_interval(interval, func, *args, **kwargs):
+async def set_interval(interval, func, check=None):
     async def interval_wrapper():
         while True:
             try:
-                await func(*args, **kwargs)
+                if check == "check":
+                    result = await func()
+                    if not result:
+                        break
+                else:
+                    result = await func()
+                    if result:
+                        break
             except:
                 pass
             await sleep(interval)

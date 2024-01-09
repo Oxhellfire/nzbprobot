@@ -84,18 +84,18 @@ class HydraHelper:
         return await self.parse_xml_data(query, res)
     
     
-    async def imdb_series_query(self, query):
+    async def imdb_series_query(self, query, imdb_name):
         res = await fetch_data(
             H_ENDPOINT, params={"t": "tvsearch", "imdbid": query}
         )
-        return await self.parse_xml_data(query, res)
+        return await self.parse_xml_data(imdb_name, res)
     
     
-    async def imdb_movie_query(self, query):
+    async def imdb_movie_query(self, query, imdb_name):
         res = await fetch_data(
             H_ENDPOINT, params={"t": "movie", "imdbid": query}
         )
-        return await self.parse_xml_data(query, res)
+        return await self.parse_xml_data(imdb_name, res)
     
     
     async def indexers(self):
@@ -103,3 +103,4 @@ class HydraHelper:
         return [
             f"{indexer['indexerName']}" for indexer in res["indexerApiAccessStats"]
         ]
+

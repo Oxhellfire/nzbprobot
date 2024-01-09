@@ -25,7 +25,7 @@ def ikb(data: dict, row_width: int=2):
 @app.on_message(filters.command(["find", "f"]))
 async def find(_, message):
     if len(message.command) < 2:
-        await message.reply_text("Where is Query")
+        await message.reply_text("Where is Query?")
         return
     query = " ".join(message.command[1:])
     output = await hydra.query(query)
@@ -35,7 +35,7 @@ async def find(_, message):
 @app.on_message(filters.command(["movie", "m"]))
 async def movie(_, message):
     if len(message.command) < 2:
-        await message.reply_text("Where is Query")
+        await message.reply_text("Where is Query?")
         return
     query = " ".join(message.command[1:])
     match = re_search(r'tt\d{4,}', query)
@@ -43,7 +43,7 @@ async def movie(_, message):
         imdb_id = match.group()
         data = ia.get_movie(imdb_id[2:])
         title = data.get('title', 'N/A')
-        output = await hydra.imdb_movie_query(imdb_id)
+        output = await hydra.imdb_movie_query(imdb_id, title)
     else:
         output = await hydra.movie_query(query)
     await message.reply_text(f"**query for {title if match else query}**\n\n{output}")
@@ -52,7 +52,7 @@ async def movie(_, message):
 @app.on_message(filters.command(["series", "s"]))
 async def search(_, message):
     if len(message.command) < 2:
-        await message.reply_text("Where is Query")
+        await message.reply_text("Where is Query?")
         return
     query = " ".join(message.command[1:])
     match = re_search(r'tt\d{4,}', query)
@@ -60,7 +60,7 @@ async def search(_, message):
         imdb_id = match.group()
         data = ia.get_movie(imdb_id[2:])
         title = data.get('title', 'N/A')
-        output = await hydra.imdb_series_query(imdb_id)
+        output = await hydra.imdb_series_query(imdb_id, title)
     else:
         output = await hydra.series_query()(query)
     await message.reply_text(f"**query for {title if match else query}**\n\n{output}")
@@ -69,7 +69,7 @@ async def search(_, message):
 @app.on_message(filters.command(["book", "b"]))
 async def book(_, message):
     if len(message.command) < 2:
-        await message.reply_text("Where is Query")
+        await message.reply_text("Where is Query?")
         return
     query = " ".join(message.command[1:])
     output = await hydra.book_query(query)
@@ -83,3 +83,4 @@ async def indexers(_, message):
         (indexer, INDEXERS_WEBSITES[indexer]) for indexer in indexers
     ])
     await message.reply_text(f"**Here are Your Indexers List**", reply_markup=buttons)
+

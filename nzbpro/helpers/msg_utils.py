@@ -49,7 +49,7 @@ async def update_all_messages():
     for chat_id in list(download_dict.keys()):
         if not progress_status:
             await clear_tasks(download_dict[chat_id])
-            return
+            return True
         if download_dict[chat_id] and progress_status != download_dict[chat_id].text:
             try:
                 await edit_message(download_dict[chat_id], progress_status)
@@ -70,4 +70,4 @@ async def send_status_message(message):
     progress_status  = await sabnzbd.onDlProgress()
     empty_status = await send_message(message, progress_status)
     download_dict[chat_id] = empty_status
-    await set_interval(10, update_all_messages)
+    await set_interval(8, update_all_messages)

@@ -1,9 +1,5 @@
 # What is this repo about?
 
-## Still Facing Issue to setup whole stuff?
-
-### Join Support Group https://t.me/nzbpro
-
 ### NzbProBot is a Telegram bot written in python which interacts with NZBHydra and SABnzbd to provide direct download link
 
 ## NZBHydra
@@ -48,7 +44,7 @@ Key Features:
 | **/book** `<query>` or **/b** `<query>`   | For finding **`Books`**                     |
 | **/indexers** or **/ind**                 | For checking all available **`Indexers`**   |
 | **/add** `<ID>`                           | For downloading **`[Movies/Series/Books]`** |
-| **/cancel**                               | It will cancel the **`Task`**               |
+| **/cancel___SAB_nzo_kj7sgw**              | It will cancel the **`Task`**               |
 | **/cancelall**                            | It will cancel all **`Tasks`**              |
 
 # Stuff Required for Bot
@@ -167,7 +163,15 @@ Save Changes
 #### Categories
 
 ```txt
-in 1st row choose script "postproc.py" click on save and don't change anythong here
+In 1st row choose script "postproc.py" click on save and don't change anythong here
+```
+
+### Switches
+
+```txt
+Under "Post Processing set "History Retention"
+
+History Retention: Do not keep any completed jobs
 ```
 
 #### Sorting
@@ -217,3 +221,8 @@ hellfire@debian: cd path/to/nzbprobot
 hellfire@debian: pip3 install -r requirements.txt
 hellfire@debian: python3 -m nzbpro
 ```
+
+# Still Facing Issue to setup whole stuff?
+
+## Join Support Group https://t.me/nzbpro
+

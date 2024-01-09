@@ -12,7 +12,7 @@ class SabnzbdDownloader:
     
     
     async def onDlStart(self):
-        await set_interval(2, self.onDlProgress)
+        await set_interval(2, self.onDlProgress, "check")
     
     
     async def onDlProgress(self):
@@ -54,23 +54,33 @@ class SabnzbdDownloader:
                 speed = _speed if status == DownloadStatus.STATUS_DOWNLOADING else 0
                 progress += get_status_msg(status, name, percentage, transferred, size, speed, eta, task_id)
         
-        if history_slots:
-            h_slot = history_slots[-1]
-            action_line = h_slot['action_line']
-            if data := findall(r'.+:.{3}([\d.]+.).{4}([\d.]+.{3}).{8}(\d+).{4}([\d.]+.{3}).{10}(\d+\w+)', action_line):
-                transferred, size, percentage, speed, eta = data[0]
-                transferred += "B"
-            name = h_slot['name']
-            task_id = h_slot['nzo_id']
-            status = h_slot['status']
-            if status == DownloadStatus.STATUS_RUNNING:
-                status = DownloadStatus.STATUS_UPLOADING
-                
-            if status == DownloadStatus.STATUS_COMPLETED:
-                await self.clear_history(task_id)
-        
-            progress += get_status_msg(status, name, percentage, transferred, size, speed, eta, task_id)
-        
+            if history_slots:
+                for h_slot in history_slots[:-1]:
+                    transferred = 0
+                    size = 0
+                    percentage = 0
+                    speed = 0
+                    eta = "0:00:0"
+                    name = h_slot['name']
+                    task_id = h_slot['nzo_id']
+                    status = "Waiting to Upload"
+                    progress += get_status_msg(status, name, percentage, transferred, size, speed, eta, task_id)
+
+                if history_slots[-1]:
+                    last_h_slot = history_slots[-1]
+                    action_line = last_h_slot['action_line']
+                    if data := findall(r'((\d+\.\d*.\w)?(\d+)?m?\d*s?)', action_line):
+                        transferred, size, percentage, speed, eta = [match[0] for match in data if match[0] and match[0].lower() != 's']
+                        transferred += "B"
+                        size += "B"
+                        speed += "B"
+                    name = last_h_slot['name']
+                    task_id = last_h_slot['nzo_id']
+                    status = last_h_slot['status']
+                    if status == DownloadStatus.STATUS_RUNNING:
+                        status = DownloadStatus.STATUS_UPLOADING
+
+                    progress += get_status_msg(status, name, percentage, transferred, size, speed, eta, task_id)
         
         return progress
 
